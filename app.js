@@ -12,7 +12,7 @@ const connectDB = require('./config/database');
 
 const { csrfSynchronisedProtection, generateToken } = csrfSync({
   getTokenFromRequest: (req) => {
-    return req.body['_csrf'] || req.query['_csrf'] || req.headers['x-csrf-token'];
+    return (req.body && req.body['_csrf']) || req.query['_csrf'] || req.headers['x-csrf-token'];
   }
 });
 
