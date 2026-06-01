@@ -34,6 +34,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// Trust reverse proxy (Crucial for Render/Heroku to allow secure cookies)
+app.set('trust proxy', 1);
+
 // Session setup
 app.use(session({
   secret: process.env.SESSION_SECRET,
