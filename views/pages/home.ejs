@@ -1,18 +1,105 @@
 <%- include('../partials/header') %>
 <%- include('../partials/navbar') %>
 
-<div class="container mt-5 text-center">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <h1 class="display-4 fw-bold mb-4">Your Lifesaving Medical Profile</h1>
-      <p class="lead text-muted mb-5">Store critical health information and generate a unique QR code for first responders to scan in an emergency.</p>
+<!-- Hero Section -->
+<div class="container mt-5 pt-3 mb-5">
+  <div class="row align-items-center g-5">
+    <div class="col-lg-6">
+      <span class="badge bg-danger bg-opacity-10 text-danger border border-danger rounded-pill px-3 py-2 mb-3 fw-bold">
+        <i class="bi bi-shield-check"></i> 100% Secure & Confidential
+      </span>
+      <h1 class="display-4 fw-bold mb-4" style="line-height: 1.2;">
+        Your Lifesaving <br> <span style="color: var(--saffron);">Medical Profile</span>
+      </h1>
+      <p class="lead text-muted mb-5 fs-5">
+        Store critical health information, track your medical reports in the cloud, and generate a unique Emergency QR Code for first responders to scan instantly.
+      </p>
       
-      <% if(!user) { %>
-        <a href="/auth/register" class="btn btn-primary-custom btn-lg me-3">Create Free Profile</a>
-        <a href="/auth/login" class="btn btn-outline-secondary btn-lg">Login</a>
-      <% } else { %>
-        <a href="/dashboard" class="btn btn-primary-custom btn-lg">Go to Dashboard</a>
-      <% } %>
+      <div class="d-flex flex-column flex-sm-row gap-3">
+        <% if(!user) { %>
+          <a href="/auth/register" class="btn btn-primary-custom btn-lg px-4 py-3 fw-bold shadow-sm">
+            Create Free Profile <i class="bi bi-arrow-right ms-2"></i>
+          </a>
+          <a href="/auth/login" class="btn btn-outline-secondary btn-lg px-4 py-3 fw-bold bg-white">
+            Login
+          </a>
+        <% } else { %>
+          <a href="/dashboard" class="btn btn-primary-custom btn-lg px-4 py-3 fw-bold shadow-sm">
+            Go to Dashboard <i class="bi bi-arrow-right ms-2"></i>
+          </a>
+        <% } %>
+      </div>
+    </div>
+    
+    <div class="col-lg-6">
+      <!-- Right Side Illustration / Graphic grid -->
+      <div class="row g-3">
+        <div class="col-6">
+          <div class="card border-0 shadow-sm rounded-4 h-100 bg-white" style="border-top: 4px solid var(--saffron) !important;">
+            <div class="card-body p-4 text-center">
+              <div class="display-4 mb-3 text-danger"><i class="bi bi-qr-code-scan"></i></div>
+              <h5 class="fw-bold">Emergency QR</h5>
+              <p class="small text-muted mb-0">Instant access for first responders.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="card border-0 shadow-sm rounded-4 h-100 bg-white" style="border-top: 4px solid var(--emerald) !important;">
+            <div class="card-body p-4 text-center">
+              <div class="display-4 mb-3 text-success"><i class="bi bi-robot"></i></div>
+              <h5 class="fw-bold">AI Allergy Check</h5>
+              <p class="small text-muted mb-0">Instantly flags dangerous drug conflicts.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="card border-0 shadow-sm rounded-4 h-100 bg-white" style="border-top: 4px solid #0dcaf0 !important;">
+            <div class="card-body p-4 text-center">
+              <div class="display-4 mb-3 text-info"><i class="bi bi-cloud-arrow-up"></i></div>
+              <h5 class="fw-bold">Cloud Reports</h5>
+              <p class="small text-muted mb-0">Store PDFs & Images securely.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="card border-0 shadow-sm rounded-4 h-100 bg-white" style="border-top: 4px solid #6c757d !important;">
+            <div class="card-body p-4 text-center">
+              <div class="display-4 mb-3 text-secondary"><i class="bi bi-file-earmark-medical"></i></div>
+              <h5 class="fw-bold">Smart Summaries</h5>
+              <p class="small text-muted mb-0">OpenAI summarizes complex blood work.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Features Section -->
+<div class="container mb-5 pb-5">
+  <div class="text-center mb-5">
+    <h3 class="fw-bold">Why choose HealthID?</h3>
+    <p class="text-muted">Designed for speed, security, and simplicity.</p>
+  </div>
+  
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+        <h4 class="fw-bold text-dark"><i class="bi bi-1-circle-fill text-danger me-2"></i> Register</h4>
+        <p class="text-muted mt-3 mb-0">Fill out your medical history, allergies, and emergency contacts in under 2 minutes.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+        <h4 class="fw-bold text-dark"><i class="bi bi-2-circle-fill text-warning me-2"></i> Save QR</h4>
+        <p class="text-muted mt-3 mb-0">Download your unique QR code. Save it as your lock screen wallpaper or print it for your wallet.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+        <h4 class="fw-bold text-dark"><i class="bi bi-3-circle-fill text-success me-2"></i> Stay Safe</h4>
+        <p class="text-muted mt-3 mb-0">In an emergency, anyone scanning the code will instantly see your lifesaving data.</p>
+      </div>
     </div>
   </div>
 </div>
