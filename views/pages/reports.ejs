@@ -1,0 +1,149 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <%- include('../partials/messages') %>
+      <div class="card card-custom p-4">
+        <h4 class="fw-bold mb-3">Upload Report</h4>
+        <form action="/reports/upload" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <div class="mb-3">
+            <label class="form-label">Report Title</label>
+            <input type="text" name="title" class="form-control" placeholder="e.g., Blood Test 2023" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Select File (PDF, JPG, PNG)</label>
+            <input type="file" name="reportFile" class="form-control" accept=".pdf, .jpg, .jpeg, .png" required>
+          </div>
+          <button type="submit" class="btn btn-primary-custom w-100">Upload to Cloud</button>
+        </form>
+      </div>
+    </div>
+    
+    <div class="col-md-8">
+      <div class="card card-custom p-4">
+        <h4 class="fw-bold mb-3">My Medical Reports</h4>
+        <% if(reports && reports.length > 0) { %>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Title</th>
+                  <th>Type</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% reports.forEach(report => { %>
+                  <tr>
+                    <td class="fw-bold"><%= report.title %></td>
+                    <td>
+                      <% if(report.fileType === 'pdf') { %>
+                        <span class="badge bg-danger">PDF</span>
+                      <% } else { %>
+                        <span class="badge bg-info">IMAGE</span>
+                      <% } %>
+                    </td>
+                    <td><%= report.uploadedAt.toDateString() %></td>
+                    <td>
+                      <a href="<%= report.fileUrl %>" target="_blank" class="btn btn-sm btn-outline-primary">View</a>
+                      <!-- Force download via Cloudinary fl_attachment flag -->
+                      <a href="<%= report.fileUrl.replace('/upload/', '/upload/fl_attachment/') %>" class="btn btn-sm btn-outline-success ms-1">DL</a>
+                      
+                      <button type="button" class="btn btn-sm btn-outline-dark ms-1 ai-btn" data-bs-toggle="modal" data-bs-target="#aiModal" data-report-id="<%= report._id %>" title="Analyze with AI">AI ✨</button>
+                      
+                      <form action="/reports/delete/<%= report._id %>" method="POST" class="d-inline">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="btn btn-sm btn-outline-danger ms-1" onclick="return confirm('Delete this report forever?');">Del</button>
+                      </form>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        <% } else { %>
+          <div class="alert alert-secondary text-center">
+            No medical reports uploaded yet.
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AI Analysis Modal -->
+<div class="modal fade" id="aiModal" tabindex="-1" aria-labelledby="aiModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="aiModalLabel"><i class="bi bi-robot"></i> AI Report Analysis</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4" id="aiModalBody">
+        <div class="text-center py-4" id="aiLoading">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-3 text-muted">OpenAI is reading your medical report. This may take a few seconds...</p>
+        </div>
+        <div id="aiSummaryContent" class="d-none lh-lg text-secondary">
+          <!-- Summary goes here -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const aiModal = document.getElementById('aiModal');
+    if (aiModal) {
+      aiModal.addEventListener('show.bs.modal', async (event) => {
+        const button = event.relatedTarget;
+        const reportId = button.getAttribute('data-report-id');
+        
+        const aiLoading = document.getElementById('aiLoading');
+        const aiSummaryContent = document.getElementById('aiSummaryContent');
+        
+        // Reset modal state
+        aiLoading.classList.remove('d-none');
+        aiSummaryContent.classList.add('d-none');
+        aiSummaryContent.innerHTML = '';
+        
+        try {
+          const response = await fetch(`/reports/analyze/${reportId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-csrf-token': '<%= csrfToken %>'
+            }
+          });
+          
+          const data = await response.json();
+          
+          aiLoading.classList.add('d-none');
+          aiSummaryContent.classList.remove('d-none');
+          
+          if (response.ok && data.summary) {
+            aiSummaryContent.innerHTML = data.summary;
+          } else {
+            aiSummaryContent.innerHTML = `<div class="alert alert-danger">${data.error || 'Failed to analyze report.'}</div>`;
+          }
+        } catch (err) {
+          aiLoading.classList.add('d-none');
+          aiSummaryContent.classList.remove('d-none');
+          aiSummaryContent.innerHTML = `<div class="alert alert-danger">Network error connecting to the AI engine.</div>`;
+        }
+      });
+    }
+  });
+</script>
+
+<%- include('../partials/footer') %>

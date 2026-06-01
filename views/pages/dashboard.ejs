@@ -1,0 +1,97 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container mt-5 pb-5">
+  <%- include('../partials/messages') %>
+  
+  <div class="row g-4">
+    <!-- Left: Welcome Card -->
+    <div class="col-md-8">
+      <h2 class="fw-bold mb-4">Dashboard</h2>
+      <div class="card card-custom p-4">
+        <div class="d-flex align-items-center mb-3 gap-3">
+          <div class="d-flex align-items-center justify-content-center rounded-circle"
+               style="width:52px;height:52px;background:var(--saffron-pale);">
+            <i class="bi bi-person-circle" style="font-size:1.6rem;color:var(--saffron);"></i>
+          </div>
+          <div>
+            <h4 class="mb-0">Welcome, <%= user.username %>!</h4>
+            <p class="text-muted mb-0" style="font-size:0.88rem;">Your secure medical profile is active.</p>
+          </div>
+        </div>
+        <hr>
+        <div class="row g-2 mt-1">
+          <div class="col-12">
+            <span class="text-muted" style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.06em;font-family:'Poppins',sans-serif;font-weight:600;">Email</span>
+            <p class="mb-2 fw-semibold"><%= user.email %></p>
+          </div>
+          <div class="col-12">
+            <span class="text-muted" style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.06em;font-family:'Poppins',sans-serif;font-weight:600;">Member Since</span>
+            <p class="mb-0 fw-semibold"><%= user.createdAt.toDateString() %></p>
+          </div>
+        </div>
+
+        <hr>
+        <div class="d-flex flex-wrap gap-2 mt-1">
+          <a href="/profile/view" class="btn btn-outline-custom">
+            <i class="bi bi-pencil-square me-1"></i> View / Edit Profile
+          </a>
+          <a href="/reports" class="btn btn-primary-custom">
+            <i class="bi bi-file-medical me-1"></i> Manage Reports
+          </a>
+          <a href="/allergy" class="btn btn-outline-custom" style="border-color:#C0392B;color:#C0392B;">
+            <i class="bi bi-shield-exclamation me-1"></i> Allergy Engine
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Emergency QR Card -->
+    <div class="col-md-4">
+      <div class="card card-custom overflow-hidden" style="border-top: 4px solid var(--saffron);">
+        <!-- Header band -->
+        <div class="px-4 pt-4 pb-3" style="background: linear-gradient(135deg, var(--saffron-pale), var(--gold-pale));">
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <i class="bi bi-qr-code-scan" style="font-size:1.3rem;color:var(--saffron);"></i>
+            <h6 class="mb-0 fw-bold" style="font-family:'Poppins',sans-serif;color:var(--text-dark);">Emergency QR Code</h6>
+          </div>
+          <p class="mb-0" style="font-size:0.78rem;color:var(--text-muted);line-height:1.4;">
+            Scan to access medical profile in emergencies
+          </p>
+        </div>
+
+        <!-- QR Image section -->
+        <div class="p-4 text-center">
+          <% if(user.qrCodeImage) { %>
+            <div class="d-inline-block p-3 rounded-3 mb-3"
+                 style="background:#fff;border:2px solid var(--border-warm);box-shadow:0 4px 16px rgba(232,103,42,0.08);">
+              <img src="<%= user.qrCodeImage %>" alt="Emergency QR Code" 
+                   class="img-fluid d-block" style="max-width:160px;border-radius:6px;">
+            </div>
+            <p class="mb-3" style="font-size:0.78rem;color:var(--text-muted);line-height:1.5;">
+              <i class="bi bi-shield-check me-1 text-success"></i>
+              Protected · Share only in emergencies
+            </p>
+            <a href="<%= user.qrCodeImage %>" download 
+               class="btn btn-primary-custom w-100">
+              <i class="bi bi-download me-2"></i>Download QR
+            </a>
+          <% } else { %>
+            <div class="py-4 text-center">
+              <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
+                   style="width:70px;height:70px;background:var(--saffron-pale);">
+                <i class="bi bi-qr-code" style="font-size:2rem;color:var(--saffron);"></i>
+              </div>
+              <p class="text-muted small">Complete your medical profile to generate your Emergency QR code</p>
+              <a href="/profile/view" class="btn btn-outline-custom btn-sm">
+                Complete Profile
+              </a>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

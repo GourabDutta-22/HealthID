@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg navbar-light navbar-glass">
+  <div class="container">
+    <a class="navbar-brand" href="/">HealthID</a>
+
+    <!-- Hamburger for mobile -->
+    <button class="navbar-toggler border-0 shadow-none" type="button"
+            data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+            style="color:var(--saffron);">
+      <i class="bi bi-list" style="font-size:1.6rem;"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+        <% if(user) { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard">
+              <i class="bi bi-speedometer2 me-1"></i>Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/reports">
+              <i class="bi bi-file-medical me-1"></i>Reports
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/allergy">
+              <i class="bi bi-shield-check me-1"></i>Allergy Check
+            </a>
+          </li>
+          <li class="nav-item ms-lg-2">
+            <a class="nav-link fw-semibold" href="/auth/logout"
+               style="color:var(--saffron)!important;">
+              <i class="bi bi-box-arrow-right me-1"></i>Logout
+            </a>
+          </li>
+        <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/auth/login">Login</a>
+          </li>
+          <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+            <a class="btn btn-primary-custom btn-sm px-4" href="/auth/register">Register</a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>

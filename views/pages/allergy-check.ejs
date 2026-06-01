@@ -1,0 +1,100 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card card-custom p-4 shadow-sm">
+        <div class="text-center mb-4">
+          <div class="mb-3">
+            <i class="bi bi-shield-check text-primary" style="font-size: 3rem;"></i>
+          </div>
+          <h2 class="fw-bold">Medical Allergy Engine</h2>
+          <p class="text-muted">Enter a medication to instantly check if it's safe against your profile's allergy list.</p>
+        </div>
+
+        <form id="allergyForm">
+          <div class="input-group mb-3">
+            <input type="text" id="medicineInput" class="form-control form-control-lg" placeholder="e.g. Amoxicillin, Ibuprofen" required>
+            <button class="btn btn-primary-custom" type="submit">Check Safety</button>
+          </div>
+        </form>
+
+        <div id="resultBox" class="mt-4 p-4 rounded d-none border transition-all">
+          <h4 id="resultStatus" class="fw-bold mb-2"></h4>
+          <p id="resultMessage" class="mb-0 fs-5"></p>
+        </div>
+        
+        <div id="recommendationBox" class="mt-3 p-4 rounded d-none border border-success bg-success bg-opacity-10 text-success-emphasis">
+          <h5 class="fw-bold mb-2"><i class="bi bi-lightbulb-fill text-success"></i> Safe Alternatives</h5>
+          <p id="recommendationMessage" class="mb-0 fs-6 lh-lg"></p>
+        </div>
+        
+        <div class="mt-5 text-muted small p-3 rounded" style="background: rgba(255,255,255,0.4);">
+          <p class="mb-1"><i class="fw-bold">Available Test Medicines in DB:</i> Amoxicillin, Ibuprofen, Aspirin, Lisinopril</p>
+          <p class="mb-0"><em>Disclaimer: This algorithmic tool is for demonstration purposes only. It should not replace professional medical advice.</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('allergyForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const medicineName = document.getElementById('medicineInput').value;
+  const resultBox = document.getElementById('resultBox');
+  const resultStatus = document.getElementById('resultStatus');
+  const resultMessage = document.getElementById('resultMessage');
+  
+  const recommendationBox = document.getElementById('recommendationBox');
+  const recommendationMessage = document.getElementById('recommendationMessage');
+  
+  // Reset Box state
+  resultBox.className = 'mt-4 p-4 rounded border'; 
+  resultStatus.innerText = 'Analyzing...';
+  resultMessage.innerText = 'Cross-referencing database...';
+  resultBox.classList.remove('d-none');
+  
+  recommendationBox.classList.add('d-none');
+  recommendationMessage.innerText = '';
+
+  try {
+    const response = await fetch('/allergy/check', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-csrf-token': '<%= csrfToken %>'
+      },
+      body: JSON.stringify({ medicineName })
+    });
+    
+    const data = await response.json();
+    
+    resultStatus.innerText = data.status;
+    resultMessage.innerText = data.message;
+    
+    if (data.status === 'High Risk') {
+      resultBox.classList.add('bg-danger', 'text-white', 'border-danger');
+    } else if (data.status === 'Warning') {
+      resultBox.classList.add('bg-warning', 'text-dark', 'border-warning');
+    } else if (data.status === 'Safe') {
+      resultBox.classList.add('bg-success', 'text-white', 'border-success');
+    } else {
+      resultBox.classList.add('bg-secondary', 'text-white');
+    }
+    
+    if (data.recommendations) {
+      recommendationMessage.innerText = data.recommendations;
+      recommendationBox.classList.remove('d-none');
+    }
+    
+  } catch (err) {
+    resultStatus.innerText = 'System Error';
+    resultMessage.innerText = 'Failed to connect to the medical database.';
+    resultBox.classList.add('bg-danger', 'text-white');
+  }
+});
+</script>
+
+<%- include('../partials/footer') %>

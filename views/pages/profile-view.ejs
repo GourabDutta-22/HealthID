@@ -1,0 +1,70 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <%- include('../partials/messages') %>
+      
+      <div class="card card-custom p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3 class="fw-bold mb-0">Medical Profile Overview</h3>
+          <a href="/profile/edit" class="btn btn-outline-primary btn-sm">Edit Profile</a>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <h5 class="text-muted border-bottom pb-2">Personal Details</h5>
+            <p><strong>Name:</strong> <%= record.fullName %></p>
+            <p><strong>DOB:</strong> <%= record.dateOfBirth.toDateString() %></p>
+            <p><strong>Gender:</strong> <%= record.gender %></p>
+            <p><strong>Blood Group:</strong> <span class="badge bg-danger fs-6"><%= record.bloodGroup %></span></p>
+            <p><strong>Height:</strong> <%= record.height %> cm | <strong>Weight:</strong> <%= record.weight %> kg</p>
+            <% if(record.phone) { %>
+              <p>
+                <strong>Phone:</strong>
+                <a href="tel:<%= record.phone %>" style="color:var(--saffron);font-weight:600;">
+                  <i class="bi bi-telephone-fill me-1"></i><%= record.phone %>
+                </a>
+              </p>
+            <% } %>
+          </div>
+          
+          <div class="col-md-6">
+            <h5 class="text-muted border-bottom pb-2">Emergency Contacts</h5>
+            <% if(record.emergencyContacts && record.emergencyContacts.length > 0) { %>
+              <% record.emergencyContacts.forEach(function(contact, i) { %>
+                <div class="mb-3 p-3 rounded-3" style="background:var(--saffron-pale);border:1px solid var(--border-warm);">
+                  <p class="mb-1 fw-bold" style="font-size:0.82rem;color:var(--navy);text-transform:uppercase;letter-spacing:0.05em;">Contact <%= i + 1 %></p>
+                  <p class="mb-1"><strong>Name:</strong> <%= contact.name %></p>
+                  <p class="mb-1"><strong>Relation:</strong> <%= contact.relationship %></p>
+                  <p class="mb-0"><strong>Phone:</strong> <a href="tel:<%= contact.phoneNumber %>" style="color:var(--saffron);font-weight:600;"><i class="bi bi-telephone-fill me-1"></i><%= contact.phoneNumber %></a></p>
+                </div>
+              <% }); %>
+            <% } else { %>
+              <p class="text-muted small">No emergency contacts added.</p>
+            <% } %>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-12">
+            <h5 class="text-muted border-bottom pb-2">Medical Conditions</h5>
+            <p><strong>Allergies:</strong> 
+              <%= record.allergies.length > 0 ? record.allergies.join(', ') : 'None reported' %>
+            </p>
+            <p><strong>Current Medications:</strong> 
+              <%= record.currentMedications.length > 0 ? record.currentMedications.join(', ') : 'None reported' %>
+            </p>
+            <p><strong>Existing Diseases:</strong> 
+              <%= record.existingDiseases.length > 0 ? record.existingDiseases.join(', ') : 'None reported' %>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

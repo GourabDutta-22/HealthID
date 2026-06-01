@@ -1,0 +1,20 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container mt-5 text-center">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h1 class="display-4 fw-bold mb-4">Your Lifesaving Medical Profile</h1>
+      <p class="lead text-muted mb-5">Store critical health information and generate a unique QR code for first responders to scan in an emergency.</p>
+      
+      <% if(!user) { %>
+        <a href="/auth/register" class="btn btn-primary-custom btn-lg me-3">Create Free Profile</a>
+        <a href="/auth/login" class="btn btn-outline-secondary btn-lg">Login</a>
+      <% } else { %>
+        <a href="/dashboard" class="btn btn-primary-custom btn-lg">Go to Dashboard</a>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

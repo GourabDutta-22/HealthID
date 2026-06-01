@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emergency Medical Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #dc3545; color: #fff; }
+    .emergency-card { background: #fff; color: #333; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+    .alert-banner { background-color: #ffc107; color: #000; font-weight: bold; text-align: center; padding: 10px; border-radius: 12px 12px 0 0; }
+  </style>
+</head>
+<body>
+  <div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="text-center mb-4">
+          <h1 class="fw-bold">🚨 EMERGENCY MEDICAL INFO</h1>
+          <p>Please provide this information to first responders immediately.</p>
+        </div>
+        
+        <div class="emergency-card">
+          <div class="alert-banner">
+            CONFIDENTIAL MEDICAL DATA
+          </div>
+          <div class="p-4">
+            <h3 class="fw-bold border-bottom pb-2 mb-3"><%= record.fullName %></h3>
+            
+            <div class="row mb-4">
+              <div class="col-6">
+                <p class="text-muted mb-0">Blood Group</p>
+                <h2 class="text-danger fw-bold"><%= record.bloodGroup %></h2>
+              </div>
+              <div class="col-6">
+                <p class="text-muted mb-0">DOB</p>
+                <p class="fw-bold fs-5"><%= record.dateOfBirth.toDateString() %></p>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <h5 class="text-muted border-bottom pb-2">Critical Alerts</h5>
+              <p><strong>Allergies:</strong> <span class="text-danger fw-bold"><%= record.allergies.length > 0 ? record.allergies.join(', ') : 'None' %></span></p>
+              <p><strong>Current Meds:</strong> <%= record.currentMedications.length > 0 ? record.currentMedications.join(', ') : 'None' %></p>
+              <p><strong>Conditions:</strong> <%= record.existingDiseases.length > 0 ? record.existingDiseases.join(', ') : 'None' %></p>
+            </div>
+
+            <div>
+              <h5 class="text-muted border-bottom pb-2">Emergency Contacts</h5>
+              <% if(record.emergencyContacts.length > 0) { %>
+                <% record.emergencyContacts.forEach(function(contact) { %>
+                  <div class="mb-2 p-3 bg-light rounded border">
+                    <p class="mb-1 fw-bold"><%= contact.name %> (<%= contact.relationship %>)</p>
+                    <a href="tel:<%= contact.phoneNumber %>" class="btn btn-danger btn-sm w-100">CALL <%= contact.phoneNumber %></a>
+                  </div>
+                <% }); %>
+              <% } else { %>
+                <p>No emergency contacts listed.</p>
+              <% } %>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
