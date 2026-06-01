@@ -58,23 +58,51 @@ exports.checkAllergyAPI = async (req, res) => {
       return res.status(400).json({ status: 'Error', message: 'Medicine name is required.' });
     }
 
-    const inputName = medicineName.toLowerCase().trim();
-
-    const sendResponse = async (payload) => {
-      if (payload.status === 'High Risk' && ai) {
-         const recs = await getSafeAlternatives(ai, medicineName, patientAllergies || []);
-         if (recs) payload.recommendations = recs;
-      }
-      return res.json(payload);
-    };
-
     // 1. Fetch user's medical record to get allergies
     const record = await MedicalRecord.findOne({ user: req.user.id });
     if (!record) {
       return res.status(400).json({ status: 'Error', message: 'No medical profile found. Please create one first.' });
     }
 
-    // Prepare patient allergies
+    return await performAllergyCheck(medicineName, record, res);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'Error', message: 'Internal server error.' });
+  }
+};
+
+exports.checkEmergencyAllergy = async (req, res) => {
+  try {
+    const { qrCodeId } = req.params;
+    const { medicineName } = req.body;
+    if (!medicineName) {
+      return res.status(400).json({ status: 'Error', message: 'Medicine name is required.' });
+    }
+
+    const user = await require('../models/User').findOne({ qrCodeId }).populate('medicalRecord');
+    if (!user || !user.medicalRecord) {
+      return res.status(404).json({ status: 'Error', message: 'Emergency profile not found.' });
+    }
+
+    return await performAllergyCheck(medicineName, user.medicalRecord, res);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'Error', message: 'Internal server error.' });
+  }
+};
+
+const performAllergyCheck = async (medicineName, record, res) => {
+  const inputName = medicineName.toLowerCase().trim();
+
+  const sendResponse = async (payload) => {
+    if (payload.status === 'High Risk' && ai) {
+       const recs = await getSafeAlternatives(ai, medicineName, patientAllergies || []);
+       if (recs) payload.recommendations = recs;
+    }
+    return res.json(payload);
+  };
+
+  // Prepare patient allergies
     const patientAllergies = record.allergies.map(a => a.toLowerCase().trim());
     if (patientAllergies.length === 0) {
       return await sendResponse({ status: 'Safe', message: 'You have no listed allergies in your medical profile. Safe to proceed.' });
@@ -222,9 +250,4 @@ exports.checkAllergyAPI = async (req, res) => {
       status: 'Safe',
       message: `Analysis Complete (via ${dataSource}): ${medName.toUpperCase()} appears safe. Active ingredients checked: [${composition.length > 0 ? composition.join(', ').toUpperCase() : 'None listed'}].`
     });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ status: 'Error', message: 'Internal server error.' });
-  }
 };

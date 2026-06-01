@@ -5,6 +5,10 @@ const { ensureAuthenticated, forwardAuthenticated } = require('../middlewares/au
 // Welcome Page
 router.get('/', forwardAuthenticated, (req, res) => res.render('pages/home'));
 
+router.get('/terms', (req, res) => {
+  res.render('pages/terms');
+});
+
 // Dashboard
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
   res.render('pages/dashboard', {

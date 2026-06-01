@@ -11,7 +11,11 @@ exports.getEmergencyProfile = async (req, res) => {
       return res.status(404).send('Emergency profile not found or invalid QR code link.');
     }
 
-    res.render('pages/emergency', { record: user.medicalRecord });
+    res.render('pages/emergency', { 
+      record: user.medicalRecord,
+      qrCodeId: user.qrCodeId,
+      csrfToken: req.csrfToken()
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error retrieving emergency profile.');
