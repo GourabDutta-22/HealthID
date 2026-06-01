@@ -14,6 +14,7 @@ exports.getEmergencyProfile = async (req, res) => {
     res.render('pages/emergency', { 
       record: user.medicalRecord,
       qrCodeId: user.qrCodeId,
+      profilePicture: user.profilePicture,
       csrfToken: req.csrfToken()
     });
   } catch (err) {

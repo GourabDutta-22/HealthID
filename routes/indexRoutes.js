@@ -9,6 +9,14 @@ router.get('/terms', (req, res) => {
   res.render('pages/terms');
 });
 
+router.get('/privacy', (req, res) => {
+  res.render('pages/privacy');
+});
+
+router.get('/about', (req, res) => {
+  res.render('pages/about');
+});
+
 // Dashboard
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
   res.render('pages/dashboard', {

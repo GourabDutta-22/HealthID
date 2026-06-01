@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
   profilePicture: String,
   qrCodeId: { type: String, unique: true, sparse: true },
   qrCodeImage: String,
+  pin: String,
   medicalRecord: { type: mongoose.Schema.Types.ObjectId, ref: 'MedicalRecord' }
 }, { timestamps: true });
 

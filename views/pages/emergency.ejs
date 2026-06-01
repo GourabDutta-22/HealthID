@@ -26,7 +26,12 @@
             CONFIDENTIAL MEDICAL DATA
           </div>
           <div class="p-4">
-            <h3 class="fw-bold border-bottom pb-2 mb-3"><%= record.fullName %></h3>
+            <% if (profilePicture) { %>
+              <div class="text-center mb-3 mt-2">
+                <img src="<%= profilePicture %>" alt="Patient Photo" class="rounded-circle border border-3 border-danger shadow" style="width: 100px; height: 100px; object-fit: cover;">
+              </div>
+            <% } %>
+            <h3 class="fw-bold border-bottom pb-2 mb-3 text-center"><%= record.fullName %></h3>
             
             <div class="row mb-4">
               <div class="col-6">

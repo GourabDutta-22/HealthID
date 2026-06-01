@@ -7,6 +7,7 @@ const MongoStore = require('connect-mongo').default || require('connect-mongo');
 const flash = require('connect-flash');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
+const cookieParser = require('cookie-parser');
 const { csrfSync } = require('csrf-sync');
 const connectDB = require('./config/database');
 
@@ -28,6 +29,7 @@ require('./config/passport')(passport);
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // View Engine setup
@@ -73,6 +75,12 @@ app.use(helmet({
 
 // Connect flash
 app.use(flash());
+
+// Parse multipart/form-data for specific routes BEFORE CSRF validation
+const { upload } = require('./config/cloudinary');
+const { ensureAuthenticated } = require('./middlewares/auth');
+app.post('/profile/edit', ensureAuthenticated, upload.single('profilePhoto'));
+app.post('/reports/upload', ensureAuthenticated, upload.single('reportFile'));
 
 // CSRF Protection
 app.use(csrfSynchronisedProtection);

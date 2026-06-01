@@ -67,9 +67,14 @@ exports.updateProfile = async (req, res) => {
       await User.findByIdAndUpdate(req.user.id, { medicalRecord: record._id });
     }
 
-    // --- QR Code Generation ---
-    // If the user doesn't have a QR code ID yet, generate one now.
+    // --- QR Code & Profile Photo Update ---
     const user = await User.findById(req.user.id);
+    
+    // Check if a profile photo was uploaded
+    if (req.file) {
+      user.profilePicture = req.file.path;
+    }
+
     if (!user.qrCodeId) {
       const qrCodeId = crypto.randomUUID(); // Secure unique identifier
       const emergencyUrl = `${req.protocol}://${req.get('host')}/emergency/${qrCodeId}`;
@@ -77,8 +82,8 @@ exports.updateProfile = async (req, res) => {
       
       user.qrCodeId = qrCodeId;
       user.qrCodeImage = qrCodeImage;
-      await user.save();
     }
+    await user.save();
 
     req.flash('success_msg', 'Medical profile saved successfully!');
     res.redirect('/profile/view');
@@ -100,6 +105,28 @@ exports.viewProfile = async (req, res) => {
   } catch (err) {
     console.error(err);
     req.flash('error_msg', 'Server error loading profile');
+    res.redirect('/dashboard');
+  }
+};
+
+exports.setPin = async (req, res) => {
+  try {
+    const { pin } = req.body;
+    if (!pin || pin.length !== 4) {
+      req.flash('error_msg', 'PIN must be exactly 4 digits');
+      return res.redirect('/dashboard');
+    }
+    
+    const salt = await require('bcrypt').genSalt(10);
+    const hashedPin = await require('bcrypt').hash(pin, salt);
+    
+    await User.findByIdAndUpdate(req.user.id, { pin: hashedPin });
+    
+    req.flash('success_msg', 'Quick PIN successfully set!');
+    res.redirect('/dashboard');
+  } catch (err) {
+    console.error(err);
+    req.flash('error_msg', 'Error saving PIN');
     res.redirect('/dashboard');
   }
 };

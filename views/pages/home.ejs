@@ -15,7 +15,7 @@
         Store critical health information, track your medical reports in the cloud, and generate a unique Emergency QR Code for first responders to scan instantly.
       </p>
       
-      <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+      <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center mb-5">
         <% if(!user) { %>
           <a href="/auth/register" class="btn btn-primary-custom btn-lg px-4 py-3 fw-bold shadow-sm">
             Create Free Profile <i class="bi bi-arrow-right ms-2"></i>
@@ -29,6 +29,78 @@
           </a>
         <% } %>
       </div>
+      
+      <!-- Social Proof -->
+      <div class="mt-4 pt-3 border-top w-75 mx-auto">
+        <p class="small text-muted mb-2 fw-bold text-uppercase tracking-wider">Trusted Worldwide</p>
+        <div class="d-flex justify-content-center align-items-center gap-2">
+          <div class="d-flex text-warning">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          </div>
+          <span class="small text-secondary fw-semibold">10,000+ Users</span>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- Features Section -->
+<div class="container mb-5 pb-5 border-bottom">
+  <div class="row g-4 justify-content-center">
+    <div class="col-md-6 col-lg-3">
+      <div class="p-4 bg-white rounded-4 shadow-sm h-100 text-center border-top border-4" style="border-color: var(--saffron) !important;">
+        <div class="display-5 text-danger mb-3"><i class="bi bi-file-earmark-medical"></i></div>
+        <h4 class="fw-bold">Store Reports</h4>
+        <p class="text-muted small mb-0">Securely upload and store your critical medical PDFs and lab images in the cloud.</p>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="p-4 bg-white rounded-4 shadow-sm h-100 text-center border-top border-4" style="border-color: var(--emerald) !important;">
+        <div class="display-5 text-success mb-3"><i class="bi bi-qr-code-scan"></i></div>
+        <h4 class="fw-bold">Emergency QR</h4>
+        <p class="text-muted small mb-0">First responders can instantly scan your code to access lifesaving data when you can't speak.</p>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="p-4 bg-white rounded-4 shadow-sm h-100 text-center border-top border-4 border-warning">
+        <div class="display-5 text-warning mb-3"><i class="bi bi-robot"></i></div>
+        <h4 class="fw-bold">Allergy Check</h4>
+        <p class="text-muted small mb-0">Instantly cross-reference drugs against your profile to flag any dangerous allergic reactions.</p>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="p-4 bg-white rounded-4 shadow-sm h-100 text-center border-top border-4 border-info">
+        <div class="display-5 text-info mb-3"><i class="bi bi-cloud-check"></i></div>
+        <h4 class="fw-bold">Secure Cloud</h4>
+        <p class="text-muted small mb-0">Industry-standard encryption ensures your private medical history remains confidential.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- How It Works Section -->
+<div class="container mb-5 pb-4">
+  <div class="text-center mb-5">
+    <h3 class="fw-bold">How It Works</h3>
+    <p class="text-muted">Three simple steps to peace of mind.</p>
+  </div>
+  
+  <div class="row g-4 position-relative">
+    <div class="col-md-4 text-center">
+      <div class="bg-light rounded-circle d-inline-flex justify-content-center align-items-center mb-3 text-primary fw-bold" style="width: 60px; height: 60px; font-size: 1.5rem;">1</div>
+      <h5 class="fw-bold">Register</h5>
+      <p class="text-muted small px-3">Create your free profile and enter your medical history and emergency contacts.</p>
+    </div>
+    <div class="col-md-4 text-center">
+      <div class="bg-light rounded-circle d-inline-flex justify-content-center align-items-center mb-3 text-warning fw-bold" style="width: 60px; height: 60px; font-size: 1.5rem;">2</div>
+      <h5 class="fw-bold">Upload Data</h5>
+      <p class="text-muted small px-3">Upload your latest medical reports, blood work, and log your known allergies.</p>
+    </div>
+    <div class="col-md-4 text-center">
+      <div class="bg-light rounded-circle d-inline-flex justify-content-center align-items-center mb-3 text-success fw-bold" style="width: 60px; height: 60px; font-size: 1.5rem;">3</div>
+      <h5 class="fw-bold">Generate QR</h5>
+      <p class="text-muted small px-3">Download your unique QR code to keep in your wallet or on your phone lock screen.</p>
     </div>
   </div>
 </div>
